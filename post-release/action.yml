@@ -1,0 +1,11 @@
+name: 'Micronaut post-release action'
+description: 'Performs some actions after doing a release'
+inputs:
+  token:
+    description: 'GitHub token to authenticate the requests'  
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.token }}

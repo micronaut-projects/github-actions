@@ -1,5 +1,3 @@
-#!/bin/sh -l
-
 #!/bin/bash
 # $1 == GH_TOKEN
 
