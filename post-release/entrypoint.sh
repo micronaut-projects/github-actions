@@ -6,7 +6,7 @@ release_version=${GITHUB_REF:11}
 echo $release_version
 
 echo -n "Determining next version: "
-next_version=`./increment_version.sh -p $release_version`
+next_version=`/increment_version.sh -p $release_version`
 echo $next_version
 
 echo "Configuring git"
