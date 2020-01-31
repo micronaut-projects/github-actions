@@ -54,3 +54,7 @@ echo "Committing and pushing"
 git add gradle.properties
 git commit -m "Back to ${next_version}.BUILD-SNAPSHOT"
 git push origin $target_branch
+
+echo "Setting release version back so that Maven Central sync can work"
+sed -i "s/^projectVersion.*$/projectVersion\=${release_version}/" gradle.properties
+cat gradle.properties
