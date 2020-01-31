@@ -1,10 +1,13 @@
 #!/bin/bash
 # $1 == GH_TOKEN
-# $2 == next_version
 
 echo -n "Determining release version: "
 release_version=${GITHUB_REF:11}
 echo $release_version
+
+echo -n "Determining next version: "
+next_version=`./increment_version.sh -p $release_version`
+echo $next_version
 
 echo "Configuring git"
 git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
@@ -41,13 +44,13 @@ curl -s --request PATCH -H "Authorization: Bearer $1" -H "Content-Type: applicat
 # curl -i --request PATCH -H "Authorization: Bearer $1" -H "Content-Type: application/json" $release_url --data "{\"body\": \"$release_body\"}"
 
 echo "Creating new milestone"
-curl -s --request POST -H "Authorization: Bearer $1" -H "Content-Type: application/json" "https://api.github.com/repos/$GITHUB_REPOSITORY/milestones" --data "{\"title\": \"$2\"}"
+curl -s --request POST -H "Authorization: Bearer $1" -H "Content-Type: application/json" "https://api.github.com/repos/$GITHUB_REPOSITORY/milestones" --data "{\"title\": \"$next_version\"}"
 
 echo "Setting new snapshot version"
-sed -i "s/^projectVersion.*$/projectVersion\=${2}-BUILD-SNAPSHOT/" gradle.properties
+sed -i "s/^projectVersion.*$/projectVersion\=${next_version}-BUILD-SNAPSHOT/" gradle.properties
 cat gradle.properties
 
 echo "Committing and pushing"
 git add gradle.properties
-git commit -m "Back to ${2}-BUILD-SNAPSHOT"
+git commit -m "Back to ${next_version}-BUILD-SNAPSHOT"
 git push origin $target_branch
