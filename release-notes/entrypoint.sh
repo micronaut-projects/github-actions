@@ -27,6 +27,8 @@ github_changelog_generator --user $organisation --project $repository --token $1
         --breaking-labels "type: breaking" \
         --deprecated-labels "type: deprecated" \
         --removed-labels "type: removed" \
+        --header-label "" \
         --usernames-as-github-logins \
         --release-branch "$3" \
-        --since-tag $latest_tag
+        --since-tag $latest_tag \
+        --future-release $next_version
