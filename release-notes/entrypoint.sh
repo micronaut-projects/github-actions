@@ -7,8 +7,8 @@ organisation=`dirname $2`
 repository=`basename $2`
 
 echo -n "Determining last version: "
-latest_tag=`curl -s "https://api.github.com/repos/$2/releases/latest" | jq '.tag_name'`
-latest_version=`echo $latest_tag | sed -e 's/[v,"]//g'`
+latest_tag=`curl -s "https://api.github.com/repos/$2/releases/latest" | jq '.tag_name' | sed -e 's/"//g'`
+latest_version=`echo $latest_tag | sed -e 's/v//g'`
 echo $latest_version
 
 echo -n "Determining next version: "
