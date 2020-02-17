@@ -9,9 +9,14 @@ inputs:
     description: 'Repository in org/repo format'
     required: true
     default: ${{ github.repository }}
+  branch:
+    description: 'Branch to target'
+    required: true
+    default: master
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.token }}
     - ${{ inputs.repository }}    
+    - ${{ inputs.branch }}        
