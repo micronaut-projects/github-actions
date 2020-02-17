@@ -12,7 +12,7 @@ latest_version=`echo $latest_tag | sed -e 's/[v,"]//g'`
 echo $latest_version
 
 echo -n "Determining next version: "
-next_version=`/increment_version.sh -p $release_version`
+next_version=`/increment_version.sh -p $latest_version`
 echo $next_version
 
 github_changelog_generator --user $organisation --project $repository --token $1 \
