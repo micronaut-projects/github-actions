@@ -18,6 +18,8 @@ echo -n "Determining next version: "
 next_version=`/increment_version.sh -p $latest_version`
 echo $next_version
 
+echo "::set-output name=next_version::$next_version"
+
 github_changelog_generator --user $organisation --project $repository --token $1 \
         --enhancement-labels "type: enhancement" \
         --bug-labels "type: bug" \

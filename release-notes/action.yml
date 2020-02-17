@@ -13,6 +13,9 @@ inputs:
     description: 'Branch to target'
     required: true
     default: master
+outputs:
+  next_version:
+    description: The next version to release
 runs:
   using: 'docker'
   image: 'Dockerfile'
