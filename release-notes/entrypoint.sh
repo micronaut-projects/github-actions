@@ -30,5 +30,5 @@ github_changelog_generator --user $organisation --project $repository --token $1
         --header-label "" \
         --usernames-as-github-logins \
         --release-branch "$3" \
-        --since-tag $latest_tag \
+        --unreleased-only \
         --future-release $next_version
