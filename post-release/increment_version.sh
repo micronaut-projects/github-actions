@@ -37,7 +37,7 @@ then
   a[2]=0
 fi
 
-if [ ! -z $patch ]
+if [ ! -z $patch ] && ! [[ "${a[3]}" =~ ^M.*|^RC.* ]]
 then
   ((a[2]++))
 fi
