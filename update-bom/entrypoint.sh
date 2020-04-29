@@ -9,7 +9,7 @@ set -e
 echo "Configuring git"
 git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 git config --global user.name "${GITHUB_ACTOR}"
-git clone --depth 1 git@github.com:micronaut-projects/micronaut-core.git --branch $2
+# git clone --depth 1 git@github.com:micronaut-projects/micronaut-core.git --branch $2
 cd micronaut-core
 git checkout -b "$3-$4"
 
