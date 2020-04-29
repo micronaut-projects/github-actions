@@ -1,0 +1,29 @@
+name: 'Micronaut update-bom action'
+description: 'Updates the Micronaut BOM by creating a pull request in micronaut-core's gradle.properties'
+inputs:
+  token:
+    description: 'GitHub token to authenticate the requests'  
+    required: false
+    default: ${{ github.token }}
+
+  branch:
+    description: 'Target branch in the micronaut-core repo for the pull request'  
+    required: false
+    default: master
+
+  property:
+    description: 'Key in gradle.properties that contains the version to be changed'
+    required: true
+
+  version:
+    description: 'The version to set it to'
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.token }}
+    - ${{ inputs.branch }}
+    - ${{ inputs.property }}
+    - ${{ inputs.version }}
