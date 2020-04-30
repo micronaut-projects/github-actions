@@ -31,4 +31,4 @@ github_changelog_generator --user $organisation --project $repository --token $1
         --usernames-as-github-logins \
         --release-branch "$3" \
         --unreleased-only \
-        --future-release $next_version
+        --future-release v$next_version
