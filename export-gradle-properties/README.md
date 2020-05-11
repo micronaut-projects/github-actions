@@ -12,6 +12,6 @@ Exports `gradle.properties` as environment variables.
   with:
     token: ${{ secrets.GH_TOKEN }}
     branch: master 
-    property: ${{ env.projectVersion }}
-    version: ${{ steps.release_version.outputs.release_version }}
+    property: someVersion
+    version: ${{ env.projectVersion }}
 ```
