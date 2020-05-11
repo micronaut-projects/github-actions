@@ -1,10 +1,6 @@
 # Micronaut export-gradle-properties action
 
-Updates the Micronaut BOM by creating a pull request in micronaut-core's `gradle.properties`.
-
-It requires a GitHub PAT with read/write permissions in micronaut-core.
-
-The target branch will be inferred from the GitHub release data.
+Exports `gradle.properties` as environment variables.
 
 ## Example usage
 
