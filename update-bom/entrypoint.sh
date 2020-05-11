@@ -6,11 +6,11 @@
 
 set -e
 
-echo "Configuring git"
-git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-git config --global user.name "${GITHUB_ACTOR}"
-cd micronaut-core
-git checkout -b "$3-$4"
+# echo "Configuring git"
+# git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+# git config --global user.name "${GITHUB_ACTOR}"
+# cd micronaut-core
+# git checkout -b "$3-$4"
 
 echo "What is properties? $3"
 
