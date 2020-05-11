@@ -1,0 +1,12 @@
+name: 'Micronaut export-gradle-properties action'
+description: 'Exposes Gradle Properties as Environment Variables'
+inputs:
+  file:
+    description: 'Location of the properties file'  
+    required: true
+    default: gradle.properties
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.file }}
