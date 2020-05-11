@@ -11,8 +11,8 @@ inputs:
     required: false
     default: master
 
-  property:
-    description: 'Key in gradle.properties that contains the version to be changed'
+  properties:
+    description: 'Key containing the properties to be changed'
     required: true
 
   version:
@@ -25,5 +25,5 @@ runs:
   args:
     - ${{ inputs.token }}
     - ${{ inputs.branch }}
-    - ${{ inputs.property }}
+    - ${{ inputs.properties }}
     - ${{ inputs.version }}
