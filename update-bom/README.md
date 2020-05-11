@@ -21,6 +21,6 @@ The target branch will be inferred from the GitHub release data.
   with:
     token: ${{ secrets.GH_TOKEN }}
     branch: master # Or 1.3.x etc
-    property: micronautMavenPluginVersion # Refers to the key in gradle.properties
-    version: ${{ steps.release_version.outputs.release_version }}
+    properties: | 
+      micronautMavenPluginVersion=${{ steps.release_version.outputs.release_version }}
 ```
