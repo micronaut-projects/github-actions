@@ -6,13 +6,18 @@
 
 set -e
 
-# echo "Configuring git"
-# git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-# git config --global user.name "${GITHUB_ACTOR}"
-# cd micronaut-core
-# git checkout -b "$3-$4"
+echo "Configuring git"
+git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+git config --global user.name "${GITHUB_ACTOR}"
+cd micronaut-core
+git checkout -b "$3-${GITHUB_REPOSTIROY:19}"
 
-echo "What is properties? $3"
+trimSpace="$(echo -e "$3" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+IFS=$'\n'       
+for j in $trimSpace
+do
+    echo "$j"
+done
 
 # echo "Setting release version in gradle.properties"
 # sed -i "s/^$3.*$/$3\=${4}/" gradle.properties
