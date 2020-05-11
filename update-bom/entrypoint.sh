@@ -10,7 +10,7 @@ echo "Configuring git"
 git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 git config --global user.name "${GITHUB_ACTOR}"
 cd micronaut-core
-git checkout -b "$3-${GITHUB_REPOSTIROY:19}"
+# git checkout -b "$3-${GITHUB_REPOSTIROY:19}"
 
 trimSpace="$(echo -e "$3" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 IFS=$'\n'       
