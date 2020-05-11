@@ -16,12 +16,14 @@ trimSpace="$(echo -e "$3" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 IFS=$'\n'       
 for j in $trimSpace
 do
-    echo "$j"
+    propertyName=$(echo "$j" | awk -F "@" '{print $1}')
+    propertyVersion=$(echo "$j" | awk -F "@" '{print $2}')
+    sed -i "s/^$propertyName.*$/$propertyName\=${propertyVersion}/" gradle.properties
 done
 
 # echo "Setting release version in gradle.properties"
 # sed -i "s/^$3.*$/$3\=${4}/" gradle.properties
-# cat gradle.properties
+cat gradle.properties
 
 # echo "Creating pull request"
 # git add gradle.properties
