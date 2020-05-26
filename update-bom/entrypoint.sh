@@ -34,4 +34,5 @@ echo "Creating pull request"
 git add gradle.properties
 git commit -m "Bump $projectName to $5"
 git push origin "$projectName-$5"
-curl -s --request POST -H "Authorization: Bearer $1" -H "Content-Type: application/json" https://api.github.com/repos/micronaut-projects/micronaut-core/pulls --data "{\"title\": \"Bump $projectName to $5\", \"head\":\"$projectName-$5\", \"base\":\"$2\"}"
+pr_url=`curl -s --request POST -H "Authorization: Bearer $1" -H "Content-Type: application/json" https://api.github.com/repos/micronaut-projects/micronaut-core/pulls --data "{\"title\": \"Bump $projectName to $5\", \"head\":\"$projectName-$5\", \"base\":\"$2\"}" | jq '.url'`
+curl -i --request PATCH -H "Authorization: Bearer $1" -H "Content-Type: application/json" $pr_url --data "{\"labels\": [\"type: dependency-upgrade\"]}"
