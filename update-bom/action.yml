@@ -13,7 +13,11 @@ inputs:
 
   properties:
     description: 'Key containing the properties to be changed'
-    required: true
+    required: false
+
+  property:
+    description: 'Key containing the property to be changed'
+    required: false
 
   version:
     description: 'The version to set it to'
@@ -26,4 +30,5 @@ runs:
     - ${{ inputs.token }}
     - ${{ inputs.branch }}
     - ${{ inputs.properties }}
+    - ${{ inputs.property }}
     - ${{ inputs.version }}
