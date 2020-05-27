@@ -4,8 +4,6 @@ Updates the Micronaut BOM by creating a pull request in micronaut-core's `gradle
 
 It requires a GitHub PAT with read/write permissions in micronaut-core.
 
-The target branch will be inferred from the GitHub release data.
-
 ## Example usage
 
 ```yaml
@@ -14,13 +12,15 @@ The target branch will be inferred from the GitHub release data.
   with:
     token: ${{ secrets.GH_TOKEN }}
     repository: micronaut-projects/micronaut-core
-    ref: master # Or 1.3.x etc
-    path: micronaut-core  # Must be micronaut-core
+    ref: ${{ env.githubCoreBranch }}
+    path: micronaut-core # Must be micronaut-core
+  continue-on-error: true      
+- name: Export Gradle Properties
+  uses: micronaut-projects/github-actions/export-gradle-properties@master            
 - name: Update BOM
   uses: micronaut-projects/github-actions/update-bom@master
   with:
     token: ${{ secrets.GH_TOKEN }}
-    branch: master # Or 1.3.x etc
-    properties: | 
-      micronautMavenPluginVersion=${{ steps.release_version.outputs.release_version }}
+    version: ${{ steps.release_version.outputs.release_version }}
+  continue-on-error: true
 ```

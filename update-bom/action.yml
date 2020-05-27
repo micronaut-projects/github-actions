@@ -3,21 +3,7 @@ description: 'Updates the Micronaut BOM by creating a pull request in micronaut-
 inputs:
   token:
     description: 'GitHub token to authenticate the requests'  
-    required: false
-    default: ${{ github.token }}
-
-  branch:
-    description: 'Target branch in the micronaut-core repo for the pull request'  
-    required: false
-    default: master
-
-  properties:
-    description: 'Key containing the properties to be changed'
-    required: false
-
-  property:
-    description: 'Key containing the property to be changed'
-    required: false
+    required: true
 
   version:
     description: 'The version to set it to'
@@ -28,7 +14,4 @@ runs:
   image: 'Dockerfile'
   args:
     - ${{ inputs.token }}
-    - ${{ inputs.branch }}
-    - ${{ inputs.properties }}
-    - ${{ inputs.property }}
     - ${{ inputs.version }}
