@@ -21,6 +21,5 @@ It requires a GitHub PAT with read/write permissions in micronaut-core.
   uses: micronaut-projects/github-actions/update-bom@master
   with:
     token: ${{ secrets.GH_TOKEN }}
-    version: ${{ steps.release_version.outputs.release_version }}
   continue-on-error: true
 ```

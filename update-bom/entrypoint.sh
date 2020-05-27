@@ -1,6 +1,5 @@
 #!/bin/bash
 # $1 == GH_TOKEN
-# $2 == version
 
 set -e
 
@@ -15,7 +14,7 @@ if [ ! -z $bomProperty ];
 then
     echo "name: $bomProperty"
     echo "value: ${!bomProperty}"
-    sed -i "s/^$bomProperty.*$/$bomProperty\=${!bomProperty}/" gradle.properties
+    sed -i "s/^$bomProperty.*$/$bomProperty\=${projectVersion}/" gradle.properties
 fi
 
 if [ ! -z $bomProperties ]; 

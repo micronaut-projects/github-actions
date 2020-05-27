@@ -4,14 +4,8 @@ inputs:
   token:
     description: 'GitHub token to authenticate the requests'  
     required: true
-
-  version:
-    description: 'The version to set it to'
-    required: true
-
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.token }}
-    - ${{ inputs.version }}
