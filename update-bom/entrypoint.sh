@@ -37,7 +37,7 @@ then
     git add gradle.properties
     git commit -m "Bump $projectName to $projectVersion"
     git push origin "$projectName-$projectVersion"
-    pr_url=`curl -s --request POST -H "Authorization: Bearer $1" -H "Content-Type: application/json" https://api.github.com/repos/micronaut-projects/micronaut-core/pulls --data "{\"title\": \"Bump $projectName to $projectVersion\", \"head\":\"$projectName-$projectVersion\", \"base\":\"$githubCoreBranch\"}" | jq '.url' | sed -e 's/^"\(.*\)"$/\1/g'``
+    pr_url=`curl -s --request POST -H "Authorization: Bearer $1" -H "Content-Type: application/json" https://api.github.com/repos/micronaut-projects/micronaut-core/pulls --data "{\"title\": \"Bump $projectName to $projectVersion\", \"head\":\"$projectName-$projectVersion\", \"base\":\"$githubCoreBranch\"}" | jq '.url' | sed -e 's/^"\(.*\)"$/\1/g'`
     echo "Pull request URL: $pr_url"
     curl -i --request PATCH -H "Authorization: Bearer $1" -H "Content-Type: application/json" $pr_url --data "{\"labels\": [\"type: dependency-upgrade\"]}"
 fi
