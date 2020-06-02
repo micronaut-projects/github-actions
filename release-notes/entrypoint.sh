@@ -3,6 +3,7 @@
 # $2 == repository (eg: Codertocat/Hello-World)
 # $3 == target branch (eg: master)
 
+echo "target branch: $3"
 organisation=`dirname $2`
 repository=`basename $2`
 
@@ -24,7 +25,7 @@ then
     next_version=`echo $3 | sed -e 's/x/0/g'`
   fi
 else
-  next_version=`./increment_version.sh -p $latest_version`
+  next_version=`/increment_version.sh -p $latest_version`
 fi
 
 echo -n "Determining next version: "
