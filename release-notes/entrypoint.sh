@@ -3,7 +3,6 @@
 # $2 == repository (eg: Codertocat/Hello-World)
 # $3 == target branch (eg: master)
 
-echo "target branch: $3"
 organisation=`dirname $2`
 repository=`basename $2`
 
