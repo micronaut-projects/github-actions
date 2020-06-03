@@ -6,8 +6,8 @@ release_version=${GITHUB_REF:11}
 echo $release_version
 
 echo "Configuring git"
-git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-git config --global user.name "${GITHUB_ACTOR}"
+git config --global user.email "micronaut-build@users.noreply.github.com"
+git config --global user.name "micronaut-build"
 git fetch
 
 echo -n "Determining target branch: "

@@ -4,8 +4,8 @@
 set -e
 
 echo "Configuring git"
-git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-git config --global user.name "${GITHUB_ACTOR}"
+git config --global user.email "micronaut-build@users.noreply.github.com"
+git config --global user.name "micronaut-build"
 cd micronaut-core
 projectName="${GITHUB_REPOSITORY:19}"
 git checkout -b "$projectName-$projectVersion"
