@@ -45,3 +45,5 @@ github_changelog_generator --user $organisation --project $repository --token $1
         --release-branch "$3" \
         --unreleased-only \
         --future-release v$next_version
+
+exit 0
