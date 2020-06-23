@@ -8,6 +8,7 @@ echo $release_version
 echo -n "Determining next version: "
 next_version=`/increment_version.sh -p $release_version`
 echo $next_version
+echo ::set-output name=next_version::${next_version}
 
 echo "Configuring git"
 git config --global user.email "micronaut-build@users.noreply.github.com"
