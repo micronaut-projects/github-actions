@@ -4,7 +4,7 @@
 set -e
 
 echo "Configuring git"
-git config --global user.email "micronaut-build@users.noreply.github.com"
+git config --global user.email "$MICRONAUT_BUILD_EMAIL"
 git config --global user.name "micronaut-build"
 cd micronaut-core
 projectName="${GITHUB_REPOSITORY:19}"

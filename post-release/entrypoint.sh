@@ -11,7 +11,7 @@ echo $next_version
 echo ::set-output name=next_version::${next_version}
 
 echo "Configuring git"
-git config --global user.email "micronaut-build@users.noreply.github.com"
+git config --global user.email "$MICRONAUT_BUILD_EMAIL"
 git config --global user.name "micronaut-build"
 git fetch
 
