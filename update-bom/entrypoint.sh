@@ -33,6 +33,7 @@ git diff
 
 if [ -z $DRY_RUN ]
 then
+    sleep 1m # wait before sending the PR so the new version is ready in JCenter/Maven Central and the build for the PR doesn't fail
     echo "Creating pull request"
     git add gradle.properties
     git commit -m "Bump $projectName to $projectVersion"
