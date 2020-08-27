@@ -33,7 +33,12 @@ echo $next_version
 
 echo "::set-output name=next_version::$next_version"
 
-github_changelog_generator --user $organisation --project $repository --token $1 \
+echo -n "Checking if ${next_version} tag exists"
+is_version_published=`curl -s https://api.github.com/repos/$2/tags | jq ".[] | select(.name == \"v$next_version\")"`
+
+if [ -z "$is_version_published" ]; then
+  echo -n "Tag doesn't exist, generating changelog"
+  github_changelog_generator --user $organisation --project $repository --token $1 \
         --enhancement-labels "type: enhancement" \
         --bug-labels "type: bug" \
         --exclude-labels "status: stale,closed: notabug,closed: duplicate,closed: question,closed: invalid,closed: won't fix" \
@@ -45,5 +50,17 @@ github_changelog_generator --user $organisation --project $repository --token $1
         --release-branch "$3" \
         --unreleased-only \
         --future-release v$next_version
+
+  if [ -f "CHANGELOG.md" ]; then
+    echo -n "Changelog generated"
+    echo "::set-output name=generated_changelog::true"
+  else
+    echo -n "Changelog not generated"
+    echo "::set-output name=generated_changelog::false"
+  fi
+else
+  echo -n "Tag ${next_version} already published. Skipping changelog generation"
+  echo "::set-output name=generated_changelog::false"
+fi
 
 exit 0
