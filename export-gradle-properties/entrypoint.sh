@@ -13,7 +13,7 @@ do
 
 		echo "$key"
 		echo "$value"
-		echo "::set-env name=$key::$value"
+		echo "$key=$value" >> $GITHUB_ENV
 	fi
 
 done < $1
