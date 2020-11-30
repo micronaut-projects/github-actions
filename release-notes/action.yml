@@ -21,5 +21,4 @@ runs:
   image: 'Dockerfile'
   args:
     - ${{ inputs.token }}
-    - ${{ inputs.repository }}    
-    - ${{ inputs.branch }}        
+    - ${{ inputs.repository }}
