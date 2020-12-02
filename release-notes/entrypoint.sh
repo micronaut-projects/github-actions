@@ -7,7 +7,11 @@ repository=`basename $2`
 
 echo -n "Current branch: "
 current_branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$current_branch" == "HEAD" ]; then
+  current_branch=`cat $GITHUB_EVENT_PATH | jq -r '.base.ref'`
+fi
 echo $current_branch
+echo "::set-output name=current_branch::$current_branch"
 
 echo -n "Determining lastest tag: "
 latest_tag=`curl -s https://api.github.com/repos/$2/releases | jq -cr ".[] | select (.target_commitish == \"$current_branch\") | .tag_name" | head -1`
