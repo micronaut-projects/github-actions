@@ -5,6 +5,18 @@ if [ -z "$SNAPSHOT_SUFFIX" ]; then
   SNAPSHOT_SUFFIX="-SNAPSHOT"
 fi
 
+if [ -n "$MICRONAUT_BUILD_EMAIL" ]; then
+    GIT_USER_EMAIL=$MICRONAUT_BUILD_EMAIL
+fi
+
+if [ -z "$GIT_USER_EMAIL" ]; then
+   GIT_USER_EMAIL="${GITHUB_ACTOR}@users.noreply.github.com"
+fi
+
+if [ -z "$GIT_USER_NAME" ]; then
+   GIT_USER_NAME="micronaut-build"
+fi
+
 echo -n "Determining release version: "
 release_version=${GITHUB_REF:11}
 echo $release_version
