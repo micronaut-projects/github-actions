@@ -5,9 +5,17 @@ echo -n "Determining release version: "
 release_version=${GITHUB_REF:11}
 echo $release_version
 
+if [ -n "$MICRONAUT_BUILD_EMAIL" ]; then
+    GIT_USER_EMAIL=$MICRONAUT_BUILD_EMAIL
+fi
+
+if [ -z "$GIT_USER_NAME" ]; then
+   GIT_USER_NAME="micronaut-build"
+fi
+
 echo "Configuring git"
-git config --global user.email "$MICRONAUT_BUILD_EMAIL"
-git config --global user.name "micronaut-build"
+git config --global user.email "$GIT_USER_EMAIL"
+git config --global user.name "$GIT_USER_NAME"
 git fetch
 
 echo -n "Determining target branch: "

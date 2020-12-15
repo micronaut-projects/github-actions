@@ -3,9 +3,21 @@
 
 set -e
 
+if [ -n "$MICRONAUT_BUILD_EMAIL" ]; then
+    GIT_USER_EMAIL=$MICRONAUT_BUILD_EMAIL
+fi
+
+if [ -z "$GIT_USER_EMAIL" ]; then
+   GIT_USER_EMAIL="${GITHUB_ACTOR}@users.noreply.github.com"
+fi
+
+if [ -z "$GIT_USER_NAME" ]; then
+   GIT_USER_NAME="micronaut-build"
+fi
+
 echo "Configuring git"
-git config --global user.email "$MICRONAUT_BUILD_EMAIL"
-git config --global user.name "micronaut-build"
+git config --global user.email "$GIT_USER_EMAIL"
+git config --global user.name "$GIT_USER_NAME"
 cd micronaut-core
 projectName="${GITHUB_REPOSITORY:19}"
 git checkout -b "$projectName-$projectVersion"
