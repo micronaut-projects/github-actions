@@ -44,23 +44,26 @@ fi
 
 if [ -f $CATALOG_FILE ]; then
     echo "Updating version catalog..."
-    if [ ! -z $bomProperty ]; 
+    if [ ! -z $bomProperty ];
     then
-        catalogProperty=$(echo $bomProperty | sed -r 's/([a-z0-9])([A-Z])/\1-\L\2/g' | sed -r 's/-version$//g')
+        if [[ -z "$catalogProperty" ]];
+        then
+          catalogProperty=$(echo $bomProperty | sed -r -E 's/([a-z0-9])([A-Z])/\1-\L\2/g' | sed -r 's/-version$//g' )
+        fi
         echo "name: $catalogProperty"
-        echo "value: ${!$bomProperty}"
+        echo "value: ${!bomProperty}"
         sed -i -E "s/^(managed-)?$catalogProperty\s*=\s*\".*$/\1$catalogProperty \= "${projectVersion}"/" $CATALOG_FILE
     fi
 
-    if [ ! -z $bomProperties ]; 
+    if [ ! -z $bomProperties ];
     then
         IFS=','
         for property in $bomProperties
         do
-            catalogProperty=$(echo $property | sed -r 's/([a-z0-9])([A-Z])/\1-\L\2/g' | sed -r 's/-version$//g')
+            catalogProperty=$(echo $property | sed -r -E 's/([a-z0-9])([A-Z])/\1-\L\2/g' | sed -r 's/-version$//g')
             echo "name: $catalogProperty"
             echo "value: ${!property}"
-            sed -i -E "s/^(managed-)?$catalogProperty\s*=\s*\".*$/\1$catalogProperty \= "${!property}"/" $CATALOG_FILE       
+            sed -i -E "s/^(managed-)?$catalogProperty\s*=\s*\".*$/\1$catalogProperty = \"${!property}\"/" $CATALOG_FILE
         done
     fi
 fi
