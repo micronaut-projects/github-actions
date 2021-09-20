@@ -54,7 +54,7 @@ if [ -f $CATALOG_FILE ]; then
         fi
         echo "name: $catalogProperty"
         echo "value: ${!bomProperty}"
-        sed -i -E "s/^(managed-)?$catalogProperty\s*=\s*\".*$/\1$catalogProperty \= "${projectVersion}"/" $CATALOG_FILE
+        sed -i -E "s/^(managed-)?$catalogProperty\s*=\s*\".*$/\1$catalogProperty = \"${projectVersion}\"/" $CATALOG_FILE
     fi
 
     if [ ! -z $bomProperties ];
