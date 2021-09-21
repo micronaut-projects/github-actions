@@ -1,0 +1,47 @@
+name: Configure the Oracle Infrastructure Cloud CLI
+description: Configures the ~/.oci/config and installs the OCI CLI
+inputs:
+  github-token:
+    description: 'GitHub token to authenticate the requests'  
+    required: true
+  oci-user-ocid:
+    description: User OCID used to authenticate to OCI.
+    required: true
+  oci-region:
+    description: OCI region where to start the runners.
+    required: true
+  oci-tenancy-ocid:
+    description: The tenancy OCID where to start the runners.
+    required: true
+  oci-private-key:
+    description: The private key used for authentication.
+    required: true
+  oci-private-key-passphrase:
+    description: The passhprase used for the private key.
+    required: false
+  oci-private-key-fingerprint:
+    description: The private key fingerprint.
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        curl -L -O https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh
+        chmod +x install.sh
+        ./install.sh --accept-all-defaults
+        echo "$HOME/bin" >> $GITHUB_PATH
+        exec -l $SHELL
+      shell: bash
+    - run: |
+        mkdir $HOME/.oci
+        echo "[DEFAULT]" >> $HOME/.oci/config
+        echo "user=${{ inputs.oci-user-ocid }}" >> $HOME/.oci/config
+        echo "fingerprint=${{ inputs.oci-private-key-fingerprint }}" >> $HOME/.oci/config
+        echo "pass_phrase=${{ inputs.oci-private-key-passphrase }}" >> $HOME/.oci/config
+        echo "region=${{ inputs.oci-region }}}" >> $HOME/.oci/config
+        echo "tenancy=${{ inputs.oci-tenancy-ocid }}" >> $HOME/.oci/config
+        echo "key_file=$HOME/.oci/key.pem" >> $HOME/.oci/config
+        echo "${{ inputs.oci-private-key }}}" >> $HOME/.oci/key.pem
+        oci setup repair-file-permissions --file $HOME/.oci/config
+        oci setup repair-file-permissions --file $HOME/.oci/key.pem
+      shell: bash
