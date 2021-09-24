@@ -44,4 +44,6 @@ runs:
         echo "${{ inputs.oci-private-key }}}" >> $HOME/.oci/key.pem
         oci setup repair-file-permissions --file $HOME/.oci/config
         oci setup repair-file-permissions --file $HOME/.oci/key.pem
+
+        cat $HOME/.oci/config
       shell: bash
