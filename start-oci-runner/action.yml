@@ -16,10 +16,14 @@ inputs:
   oci-image-ocid:
     description: The image of the runner.
     required: true
+  oci-image-shape:
+    description: The image shape.
+    required: false
+    default: "VM.Standard2.4"
   runners-count:
     description: Number of runners to start
     required: false
-    default: '1'
+    default: "1"
 runs:
   using: "composite"
   steps:
@@ -45,14 +49,14 @@ runs:
           FREEFORM_TAGS="{\"repository\": \"${GITHUB_REPOSITORY}\", \"label\":\"${GITHUB_RUN_ID}\"}"
           INSTANCE_NAME=$( echo "${GITHUB_WORKFLOW}${GITHUB_RUN_ID}" | sed 's/[[:space:]]//g')${NUMBER}
           RESPONSE=$(oci compute instance launch \
-            --compartment-id "${{ inputs.oci-compartment-ocid }}" \
+            --compartment-id ${{ inputs.oci-compartment-ocid }} \
             --metadata "{\"user_data\": \"$USER_DATA\"}" \
             --display-name "${INSTANCE_NAME}" \
-            --subnet-id "${{ inputs.oci-subnet-ocid }}" \
+            --subnet-id ${{ inputs.oci-subnet-ocid }} \
             --wait-for-state RUNNING \
-            --image-id "${{ inputs.oci-image-ocid }}" \
-            --availability-domain "${{ inputs.oci-av-domain }}" \
-            --shape VM.Standard2.4 \
+            --image-id ${{ inputs.oci-image-ocid }} \
+            --availability-domain ${{ inputs.oci-av-domain }} \
+            --shape ${{ inputs.oci-image-shape }} \
             --freeform-tags "${FREEFORM_TAGS}"
           )
           INSTANCE_ID=$(echo $RESPONSE | jq -r '.data.id')
