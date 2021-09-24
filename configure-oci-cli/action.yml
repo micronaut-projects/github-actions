@@ -38,7 +38,7 @@ runs:
         echo "user=${{ inputs.oci-user-ocid }}" >> $HOME/.oci/config
         echo "fingerprint=${{ inputs.oci-private-key-fingerprint }}" >> $HOME/.oci/config
         echo "pass_phrase=${{ inputs.oci-private-key-passphrase }}" >> $HOME/.oci/config
-        echo "region=${{ inputs.oci-region }}}" >> $HOME/.oci/config
+        echo "region=${{ inputs.oci-region }}" >> $HOME/.oci/config
         echo "tenancy=${{ inputs.oci-tenancy-ocid }}" >> $HOME/.oci/config
         echo "key_file=$HOME/.oci/key.pem" >> $HOME/.oci/config
         echo "${{ inputs.oci-private-key }}" >> $HOME/.oci/key.pem
