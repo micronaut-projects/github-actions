@@ -4,15 +4,6 @@ inputs:
   github-token:
     description: 'GitHub token to authenticate the requests'  
     required: true
-  oci-user-ocid:
-    description: User OCID used to authenticate to OCI.
-    required: true
-  oci-reqion:
-    description: OCI region where to start the runners.
-    required: true
-  oci-tenancy-ocid:
-    description: The tenancy OCID where to start the runners.
-    required: true
   oci-compartment-ocid:
     description: The compartment OCID where to start the runners.
     required: true
@@ -25,15 +16,6 @@ inputs:
   oci-image-ocid:
     description: The image of the runner.
     required: true
-  oci-private-key:
-    description: The private key used for authentication.
-    required: true
-  oci-private-key-passphrase:
-    description: The passhprase used for the private key.
-    required: false
-  oci-private-key-fingerprint:
-    description: The private key fingerprint.
-    required: true
   runners-count:
     description: Number of runners to start
     required: false
@@ -41,15 +23,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: micronaut-projects/github-actions/configure-oci-cli@master
-      with:
-        github-token: ${{ inputs.github-token }}
-        oci-user-ocid: ${{ inputs.oci-user-ocid }}
-        oci-region: ${{ inputs.oci-region }}
-        oci-tenancy-ocid: ${{ inputs.oci-tenancy-ocid }}
-        oci-private-key: ${{ inputs.oci-private-key }}
-        oci-private-key-passphrase: ${{ inputs.oci-private-key-passphrase }}
-        oci-private-key-fingerprint: ${{ inputs.oci-private-key-fingerprint }}
     - run: |
         REGISTRATION_TOKEN_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runners/registration-token"
         export RUNNER_TOKEN=$(curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ inputs.github-token }} ${REGISTRATION_TOKEN_URL}  | jq -r '.token')
@@ -71,12 +44,13 @@ runs:
           USER_DATA=$(echo "$USER_DATA_RAW" | base64 -w 0)
           FREEFORM_TAGS="{\"repository\": \"${GITHUB_REPOSITORY}\", \"label\":\"${GITHUB_RUN_ID}\"}"
           INSTANCE_NAME=$( echo "${GITHUB_WORKFLOW}${GITHUB_RUN_ID}" | sed 's/[[:space:]]//g')${NUMBER}
-          RESPONSE=$(oci compute instance launch --compartment-id "${{ inputs.oci-compartment-ocid }}" \
+          RESPONSE=$(oci compute instance launch \
+            --compartment-id "${{ inputs.oci-compartment-ocid }}" \
             --metadata "{\"user_data\": \"$USER_DATA\"}" \
             --display-name "${INSTANCE_NAME}" \
             --subnet-id "${{ inputs.oci-subnet-ocid }}" \
             --wait-for-state RUNNING \
-            --image-id $OCI_RUNNER_IMAGE \
+            --image-id "${{ inputs.oci-image-ocid }}" \
             --availability-domain "${{ inputs.oci-av-domain }}" \
             --shape VM.Standard2.4 \
             --freeform-tags "${FREEFORM_TAGS}"
