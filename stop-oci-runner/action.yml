@@ -15,8 +15,9 @@ runs:
   steps:
     - id: stop-runner
       run: |
+        RUNNER_LABEL=${{ inputs.oci-runner-label-tag-value }}
         for ID in $(oci compute instance list --compartment-id ${{ inputs.oci-compartment-ocid }} | \
-         jq -r ".data[] | select( .\"freeform-tags\".repository == \"$GITHUB_REPOSITORY\" and .\"freeform-tags\".label == \"${{ inputs.oci-runner-label-tag-value }}\" ) | .id")
+         jq -r ".data[] | select( .\"freeform-tags\".repository == \"$GITHUB_REPOSITORY\" and .\"freeform-tags\".label == \"$RUNNER_LABEL\" ) | .id")
         do
           oci compute instance terminate --instance-id "$ID"  --wait-for-state TERMINATED --force
         done
