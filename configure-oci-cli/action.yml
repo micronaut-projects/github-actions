@@ -41,9 +41,7 @@ runs:
         echo "region=${{ inputs.oci-region }}}" >> $HOME/.oci/config
         echo "tenancy=${{ inputs.oci-tenancy-ocid }}" >> $HOME/.oci/config
         echo "key_file=$HOME/.oci/key.pem" >> $HOME/.oci/config
-        echo "${{ inputs.oci-private-key }}}" >> $HOME/.oci/key.pem
+        echo "${{ inputs.oci-private-key }}" >> $HOME/.oci/key.pem
         oci setup repair-file-permissions --file $HOME/.oci/config
         oci setup repair-file-permissions --file $HOME/.oci/key.pem
-
-        cat $HOME/.oci/config
       shell: bash
