@@ -1,0 +1,71 @@
+name: On-demand self hosted OCI runners for GitHub Actions
+description: Creates self-hosted runners in Oracle Cloud Infrastructure
+inputs:
+  github-token:
+    description: 'GitHub token to authenticate the requests'  
+    required: true
+  oci-compartment-ocid:
+    description: The compartment OCID where to start the runners.
+    required: true
+  oci-subnet-ocid:
+    description: The subnet OCID where to start the runners.
+    required: true
+  oci-av-domain:
+    description: The region's availability domain where to start the runners.
+    required: true
+  oci-image-ocid:
+    description: The image of the runner.
+    required: true
+  oci-image-shape:
+    description: The image shape.
+    required: false
+    default: "VM.Standard2.4"
+  runners-count:
+    description: Number of runners to start
+    required: false
+    default: "1"
+outputs:
+  label:
+    description: The label tag value of started runner.
+    value: ${{ steps.start-runner.outputs.label }}
+runs:
+  using: "composite"
+  steps:
+    - id: start-runner
+      run: |
+        REGISTRATION_TOKEN_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runners/registration-token"
+        export RUNNER_TOKEN=$(curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ inputs.github-token }}" ${REGISTRATION_TOKEN_URL}  | jq -r '.token')
+        RUNNERS_COUNT=${{ inputs.runners-count }}
+        for NUMBER in $(seq ${RUNNERS_COUNT});
+        do
+          USER_DATA_RAW=$(
+            cat <<EOM
+        #!/usr/bin/env bash
+        cd /home/github-runner
+        sudo -u github-runner mkdir actions-runner && cd actions-runner
+        sudo -u github-runner curl -o actions-runner-linux-x64-2.277.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.277.1/actions-runner-linux-x64-2.277.1.tar.gz
+        sudo -u github-runner tar xzf ./actions-runner-linux-x64-2.277.1.tar.gz
+        sudo -u github-runner ./config.sh --name "${GITHUB_WORKFLOW}${GITHUB_RUN_ID}${NUMBER}" --unattended --url https://github.com/${GITHUB_REPOSITORY} --token ${RUNNER_TOKEN} --replace --labels ${GITHUB_RUN_ID}
+        ./svc.sh install github-runner
+        ./svc.sh start
+        EOM
+        )
+          USER_DATA=$(echo "$USER_DATA_RAW" | base64 -w 0)
+          FREEFORM_TAGS="{\"repository\": \"${GITHUB_REPOSITORY}\", \"label\":\"${GITHUB_RUN_ID}\"}"
+          INSTANCE_NAME=$( echo "${GITHUB_WORKFLOW}${GITHUB_RUN_ID}" | sed 's/[[:space:]]//g')${NUMBER}
+          RESPONSE=$(oci compute instance launch \
+            --compartment-id ${{ inputs.oci-compartment-ocid }} \
+            --metadata "{\"user_data\": \"$USER_DATA\"}" \
+            --display-name "${INSTANCE_NAME}" \
+            --subnet-id ${{ inputs.oci-subnet-ocid }} \
+            --wait-for-state RUNNING \
+            --image-id ${{ inputs.oci-image-ocid }} \
+            --availability-domain ${{ inputs.oci-av-domain }} \
+            --shape ${{ inputs.oci-image-shape }} \
+            --freeform-tags "${FREEFORM_TAGS}"
+          )
+          INSTANCE_ID=$(echo $RESPONSE | jq -r '.data.id')
+        done
+        echo "::set-output name=label::${GITHUB_RUN_ID}"
+        sleep 60
+      shell: bash
