@@ -80,6 +80,10 @@ git add gradle.properties
 git commit -m "Back to ${next_version}$SNAPSHOT_SUFFIX"
 git push origin $target_branch
 
+# Clean up .git artifacts we've created as root (so non-docker actions that follow can use git without re-cloning)
+echo "Cleaning up artifacts with excessive permissions"
+rm -f .git/COMMIT_EDITMSG
+
 echo "Setting release version back so that Maven Central sync can work"
 sed -i "s/^projectVersion.*$/projectVersion\=${release_version}/" gradle.properties
 cat gradle.properties
