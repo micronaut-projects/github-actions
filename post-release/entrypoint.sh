@@ -31,6 +31,7 @@ echo $next_version
 echo ::set-output name=next_version::${next_version}
 
 echo "Configuring git"
+git config --global --add safe.directory /github/workspace
 git config --global user.email "$GIT_USER_EMAIL"
 git config --global user.name "$GIT_USER_NAME"
 git fetch
