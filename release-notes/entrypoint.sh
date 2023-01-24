@@ -11,7 +11,7 @@ if [ "$current_branch" == "HEAD" ]; then
   current_branch=`cat $GITHUB_EVENT_PATH | jq -r '.base.ref'`
 fi
 echo $current_branch
-echo "current_branch=$current_branch" >> $GITHUB_OUTPUT
+echo "::set-output name=current_branch::$current_branch"
 
 echo -n "Determining lastest tag: "
 latest_tag=`curl -s https://api.github.com/repos/$2/releases | jq -cr ".[] | select (.target_commitish == \"$current_branch\") | .tag_name" | head -1`
@@ -38,7 +38,7 @@ fi
 echo -n "Determining next version: "
 echo $next_version
 
-echo "next_version=$next_version" >> $GITHUB_OUTPUT
+echo "::set-output name=next_version::$next_version"
 
 echo "Checking if ${next_version} tag exists"
 is_version_published=`curl -s https://api.github.com/repos/$2/tags | jq ".[] | select(.name == \"v$next_version\")"`
