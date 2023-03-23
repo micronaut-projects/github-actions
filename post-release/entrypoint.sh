@@ -52,23 +52,6 @@ echo $milestone_number
 echo "Closing current milestone"
 curl -s --request PATCH -H "Authorization: Bearer $1" -H "Content-Type: application/json" https://api.github.com/repos/$GITHUB_REPOSITORY/milestones/$milestone_number --data '{"state":"closed"}'
 
-echo "Getting issues closed"
-issues_closed=`curl -s "https://api.github.com/repos/$GITHUB_REPOSITORY/issues?milestone=$milestone_number&state=closed" | jq '.[] | "* \(.title) (#\(.number))"' | sed -e 's/^"\(.*\)"$/\1/g'`
-echo $issues_closed
-
-echo -n "Getting release url: "
-release_url=`cat $GITHUB_EVENT_PATH | jq '.release.url' | sed -e 's/^"\(.*\)"$/\1/g'`
-echo $release_url
-
-echo -n "Getting release body: "
-release_body=`cat $GITHUB_EVENT_PATH | jq '.release.body' | sed -e 's/^"\(.*\)"$/\1/g'`
-echo $release_body
-
-echo -n "Updating release body: "
-release_body="${release_body}\r\n${issues_closed}"
-echo $release_body
-curl -i --request PATCH -H "Authorization: Bearer $1" -H "Content-Type: application/json" $release_url --data "{\"body\": \"$release_body\"}"
-
 echo "Creating new milestone"
 curl -s --request POST -H "Authorization: Bearer $1" -H "Content-Type: application/json" "https://api.github.com/repos/$GITHUB_REPOSITORY/milestones" --data "{\"title\": \"$next_version\"}"
 
