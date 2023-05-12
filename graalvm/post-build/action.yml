@@ -1,0 +1,16 @@
+name: Post-build steps for graalvm workflow
+description: Runs post-build steps for graalvm workflow
+inputs:
+  java:
+    description: 'Java version'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: "Publish Test Report"
+      if: always()
+      uses: mikepenz/action-junit-report@v3
+      with:
+        check_name: GraalVM CI / Test Report (${{ inputs.java }})
+        report_paths: '**/build/test-results/test/TEST-*.xml'
+        check_retries: 'true'
