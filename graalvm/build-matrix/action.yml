@@ -1,0 +1,37 @@
+name: Build matrix for graalvm workflow
+description: Creates matrix for graalvm workflow
+inputs:
+  graalvm:
+    description: 'GraalVM version'
+    required: true
+  java:
+    description: 'Java version'
+    required: true
+outputs:
+  matrix:
+    description: "Build matrix"
+    value: ${{ steps.set-matrix.outputs.matrix }}
+runs:
+  using: "composite"
+  steps:
+    - name: "Checkout repository"
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: "Setup GraalVM CE"
+      uses: graalvm/setup-graalvm@v1
+      with:
+        version: ${{ inputs.graalvm }}
+        java-version: ${{ inputs.java }}
+        components: 'native-image'
+
+    - name: "Setup Gradle"
+      uses: gradle/gradle-build-action@v2
+
+    - name: "Set Matrix"
+      id: set-matrix
+      shell: bash
+      run: |
+        nativeTestTasks=$(./gradlew tasks --no-daemon --all | grep -w "nativeTest" | sed 's/\(.*\) - Executes the test native binary/\"\1\"/' | tr '\n' ',' | sed 's/.$//')
+        echo "matrix={\"native_test_task\":[$(echo $nativeTestTasks)], \"graalvm\":${{ inputs.graalvm }}, \"java\":${{ inputs.java }}}" >> $GITHUB_OUTPUT
