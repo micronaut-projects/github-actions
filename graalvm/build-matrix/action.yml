@@ -11,9 +11,6 @@ outputs:
   matrix:
     description: "Matrix for native tests"
     value: ${{ steps.set-matrix.outputs.matrix }}
-  run-native-tests:
-    description: "Indicator whether native test have been found or not"
-    value: ${{ steps.set-matrix.outputs.run-native-tests }}
 runs:
   using: "composite"
   steps:
@@ -36,17 +33,14 @@ runs:
       id: set-matrix
       shell: bash
       run: |
+        nativeTestTasks=""
         gradleTasks=$(./gradlew tasks --no-daemon --all)
         if [[ "$gradleTasks" == *"nativeTest"* ]]; then
-          echo "run-native-tests=true" >> $GITHUB_OUTPUT
-          nativeTestTasks=$(echo "$gradleTasks" | grep -w "nativeTest")
-          nativeTestTasks="${nativeTestTasks% - Executes the test native binary}"
-          nativeTestTasks="${nativeTestTasks// - Executes the test native binary /\",\"}"
-          nativeTestTasks="${nativeTestTasks/#/\"}"
-          nativeTestTasks="${nativeTestTasks/%/\"}"
-          echo "matrix={\"native_test_task\":[$(echo $nativeTestTasks)], \"graalvm\":[\"${{ inputs.graalvm }}\"], \"java\":[\"${{ inputs.java }}\"]}" >> $GITHUB_OUTPUT
+          nativeTestTasks=$(echo "$gradleTasks" | grep -w "nativeTest" | sed 's/\(.*\) - Executes the test native binary/\"\1\"/' | tr '\n' ',' | sed 's/.$//')
+          echo "Found native test tasks and added to matrix"
         else
-          echo "Native tests not found"
-          echo "run-native-tests=false" >> $GITHUB_OUTPUT
-          echo "matrix={\"graalvm\":[\"${{ inputs.graalvm }}\"], \"java\":[\"${{ inputs.java }}\"]}" >> $GITHUB_OUTPUT
+          echo "Native test tasks not found"
         fi
+        matrixValue="{\"native_test_task\":[$(echo $nativeTestTasks)], \"graalvm\":[\"${{ inputs.graalvm }}\"], \"java\":[\"${{ inputs.java }}\"]}"
+        echo "Created matrix: $matrixValue"
+        echo "matrix=$matrixValue" >> $GITHUB_OUTPUT
