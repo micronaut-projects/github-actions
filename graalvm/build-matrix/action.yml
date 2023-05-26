@@ -36,11 +36,12 @@ runs:
         echo "Searching for native test tasks ..."
         gradleTasks=$(./gradlew tasks --no-daemon --all)
         if [[ "$gradleTasks" == *"nativeTest"* ]]; then
+          echo "Found native test tasks"
           nativeTestTasks=$(echo "$gradleTasks" | grep -w "nativeTest" | sed 's/\(.*\) - Executes the test native binary/\"\1\"/' | tr '\n' ',' | sed 's/.$//')
-          echo "Found native test tasks and added to matrix"
+          nativeTestTasksEntry="\"native_test_task\":[$(echo $nativeTestTasks)],"
         else
           echo "Native test tasks not found"
         fi
-        matrixValue="{\"native_test_task\":[$(echo $nativeTestTasks)], \"graalvm\":[\"${{ inputs.graalvm }}\"], \"java\":[\"${{ inputs.java }}\"]}"
+        matrixValue="{$(echo $nativeTestTasksEntry)\"graalvm\":[\"${{ inputs.graalvm }}\"],\"java\":[\"${{ inputs.java }}\"]}"
         echo "Created matrix: $matrixValue"
         echo "matrix=$matrixValue" >> $GITHUB_OUTPUT
