@@ -34,4 +34,4 @@ runs:
       shell: bash
       run: |
         nativeTestTasks=$(./gradlew tasks --no-daemon --all | grep -w "nativeTest" | sed 's/\(.*\) - Executes the test native binary/\"\1\"/' | tr '\n' ',' | sed 's/.$//')
-        echo "matrix={\"native_test_task\":[$(echo $nativeTestTasks)], \"graalvm\":${{ inputs.graalvm }}, \"java\":${{ inputs.java }}}" >> $GITHUB_OUTPUT
+        echo "matrix={\"native_test_task\":[$(echo $nativeTestTasks)], \"graalvm\":\"${{ inputs.graalvm }}\", \"java\":\"${{ inputs.java }}\"}" >> $GITHUB_OUTPUT
