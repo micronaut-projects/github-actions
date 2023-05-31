@@ -1,5 +1,9 @@
 name: Build steps for graalvm workflow
 description: Runs build steps for graalvm workflow
+inputs:
+  nativeTestTask:
+    description: 'Native test task'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -7,10 +11,7 @@ runs:
       id: gradle
       shell: bash
       run: |
-        if ./gradlew tasks --no-daemon --all | grep -w "nativeTest"
-        then
-          ./gradlew nativeTest --no-daemon --continue
-        fi
+        ./gradlew ${{ inputs.nativeTestTask }} --no-daemon --continue
       env:
         TESTCONTAINERS_RYUK_DISABLED: 'true'
         PREDICTIVE_TEST_SELECTION: "${{ github.event_name == 'pull_request' && 'true' || 'false' }}"
