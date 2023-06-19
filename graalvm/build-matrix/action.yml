@@ -42,6 +42,6 @@ runs:
         else
           echo "Native test tasks not found"
         fi
-        matrixValue="{$(echo $nativeTestTasksEntry)\"graalvm\":[\"${{ inputs.graalvm }}\"],\"java\":[\"${{ inputs.java }}\"]}"
+        matrixValue="{$(echo $nativeTestTasksEntry)\"distribution\":[\"${{ inputs.distribution }}\"],\"java\":[\"${{ inputs.java }}\"]}"
         echo "Created matrix: $matrixValue"
         echo "matrix=$matrixValue" >> $GITHUB_OUTPUT
