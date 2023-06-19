@@ -30,7 +30,7 @@ runs:
         if [[ "$gradleTasks" == *"nativeTest"* ]]; then
           echo "Found native test tasks"
           nativeTestTasks=$(echo "$gradleTasks" | grep -w "nativeTest" | sed 's/\(.*\) - Executes the test native binary/\"\1\"/' | tr '\n' ',' | sed 's/.$//')
-          nativeTestTasksEntry="\"native_test_task\":[$(echo $nativeTestTasks)],"
+          nativeTestTasksEntry="\"native_test_task\":[$(echo $nativeTestTasks)]"
         else
           echo "Native test tasks not found"
         fi
