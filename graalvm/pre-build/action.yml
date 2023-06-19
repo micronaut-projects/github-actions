@@ -27,7 +27,7 @@ runs:
     - name: "Setup GraalVM CE"
       uses: graalvm/setup-graalvm@v1
       with:
-        distribution: ${{ inputs.distribution }}
+
         java-version: ${{ inputs.java }}
         components: 'native-image'
 
