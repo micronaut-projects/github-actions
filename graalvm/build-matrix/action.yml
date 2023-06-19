@@ -1,12 +1,5 @@
 name: Build matrix for graalvm workflow
 description: Creates matrix for graalvm workflow
-inputs:
-  distribution:
-    description: 'GraalVM distribution (graalvm, graalvm-community, or mandrel)'
-    required: true
-  java:
-    description: 'Java version'
-    required: true
 outputs:
   matrix:
     description: "Matrix for native tests"
@@ -22,8 +15,8 @@ runs:
     - name: "Setup GraalVM CE"
       uses: graalvm/setup-graalvm@v1
       with:
-        distribution: ${{ inputs.distribution }}
-        java-version: ${{ inputs.java }}
+        distribution: 'graalvm-community'
+        java-version: '17'
 
     - name: "Setup Gradle"
       uses: gradle/gradle-build-action@v2
@@ -41,6 +34,6 @@ runs:
         else
           echo "Native test tasks not found"
         fi
-        matrixValue="{$(echo $nativeTestTasksEntry)\"java\":[\"${{ inputs.java }}\"]}"
+        matrixValue="{$(echo $nativeTestTasksEntry)}"
         echo "Created matrix: $matrixValue"
         echo "matrix=$matrixValue" >> $GITHUB_OUTPUT
