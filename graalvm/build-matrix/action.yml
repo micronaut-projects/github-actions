@@ -33,6 +33,7 @@ runs:
           nativeTestTasksEntry="\"native_test_task\":[$(echo $nativeTestTasks)]"
         else
           echo "Native test tasks not found"
+          nativeTestTasksEntry="\"native_test_task\":[\"\"]"
         fi
         matrixValue="{$(echo $nativeTestTasksEntry)}"
         echo "Created matrix: $matrixValue"
