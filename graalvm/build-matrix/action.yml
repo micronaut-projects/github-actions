@@ -24,7 +24,6 @@ runs:
       with:
         distribution: ${{ inputs.distribution }}
         java-version: ${{ inputs.java }}
-        components: 'native-image'
 
     - name: "Setup Gradle"
       uses: gradle/gradle-build-action@v2
@@ -42,6 +41,6 @@ runs:
         else
           echo "Native test tasks not found"
         fi
-        matrixValue="{$(echo $nativeTestTasksEntry)\"distribution\":[\"${{ inputs.distribution }}\"],\"java\":[\"${{ inputs.java }}\"]}"
+        matrixValue="{$(echo $nativeTestTasksEntry)\"java\":[\"${{ inputs.java }}\"]}"
         echo "Created matrix: $matrixValue"
         echo "matrix=$matrixValue" >> $GITHUB_OUTPUT
