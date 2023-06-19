@@ -3,7 +3,7 @@ description: Runs pre-build steps for graalvm workflow
 inputs:
   distribution:
     description: 'GraalVM distribution (graalvm, graalvm-community, or mandrel)'
-    required: true
+    required: false
   java:
     description: 'Java version'
     required: true
