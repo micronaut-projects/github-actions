@@ -66,6 +66,6 @@ runs:
           )
           INSTANCE_ID=$(echo $RESPONSE | jq -r '.data.id')
         done
-        echo "::set-output name=label::${GITHUB_RUN_ID}"
+        echo "label=${GITHUB_RUN_ID}" >> $GITHUB_OUTPUT
         sleep 60
       shell: bash

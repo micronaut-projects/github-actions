@@ -60,14 +60,14 @@ if [ -z "$is_version_published" ]; then
 
   if [ -f "CHANGELOG.md" ]; then
     echo "Changelog generated"
-    echo "::set-output name=generated_changelog::true"
+    echo "generated_changelog=true" >> $GITHUB_OUTPUT
   else
     echo "Changelog not generated"
-    echo "::set-output name=generated_changelog::false"
+    echo "generated_changelog=false" >> $GITHUB_OUTPUT
   fi
 else
   echo "Tag ${next_version} already published. Skipping changelog generation"
-  echo "::set-output name=generated_changelog::false"
+  echo "generated_changelog=false" >> $GITHUB_OUTPUT
 fi
 
 exit 0
