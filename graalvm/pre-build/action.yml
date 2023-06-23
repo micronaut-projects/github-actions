@@ -25,7 +25,7 @@ runs:
         fetch-depth: 0
 
     - name: "Setup GraalVM CE"
-      uses: graalvm/setup-graalvm@v1.1.0
+      uses: graalvm/setup-graalvm@v1.0.12
       with:
         version: ${{ inputs.graalvm }}
         java-version: ${{ inputs.java }}
