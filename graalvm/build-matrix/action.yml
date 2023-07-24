@@ -13,7 +13,7 @@ runs:
         fetch-depth: 0
 
     - name: "Setup GraalVM CE"
-      uses: graalvm/setup-graalvm@v1
+      uses: graalvm/setup-graalvm@v1.1.1
       with:
         distribution: 'graalvm-community'
         java-version: '17'
