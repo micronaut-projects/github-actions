@@ -1,12 +1,5 @@
 name: Build matrix for graalvm workflow
 description: Creates matrix for graalvm workflow
-inputs:
-  graalvm:
-    description: 'GraalVM version'
-    required: true
-  java:
-    description: 'Java version'
-    required: true
 outputs:
   matrix:
     description: "Matrix for native tests"
@@ -20,11 +13,10 @@ runs:
         fetch-depth: 0
 
     - name: "Setup GraalVM CE"
-      uses: graalvm/setup-graalvm@v1.0.12
+      uses: graalvm/setup-graalvm@v1.1.1
       with:
-        version: ${{ inputs.graalvm }}
-        java-version: ${{ inputs.java }}
-        components: 'native-image'
+        distribution: 'graalvm-community'
+        java-version: '17'
 
     - name: "Setup Gradle"
       uses: gradle/gradle-build-action@v2
@@ -38,10 +30,11 @@ runs:
         if [[ "$gradleTasks" == *"nativeTest"* ]]; then
           echo "Found native test tasks"
           nativeTestTasks=$(echo "$gradleTasks" | grep -w "nativeTest" | sed 's/\(.*\) - Executes the test native binary/\"\1\"/' | tr '\n' ',' | sed 's/.$//')
-          nativeTestTasksEntry="\"native_test_task\":[$(echo $nativeTestTasks)],"
+          nativeTestTasksEntry="\"native_test_task\":[$(echo $nativeTestTasks)]"
         else
           echo "Native test tasks not found"
+          nativeTestTasksEntry="\"native_test_task\":[\"\"]"
         fi
-        matrixValue="{$(echo $nativeTestTasksEntry)\"graalvm\":[\"${{ inputs.graalvm }}\"],\"java\":[\"${{ inputs.java }}\"]}"
+        matrixValue="{$(echo $nativeTestTasksEntry)}"
         echo "Created matrix: $matrixValue"
         echo "matrix=$matrixValue" >> $GITHUB_OUTPUT

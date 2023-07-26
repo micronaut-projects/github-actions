@@ -1,9 +1,9 @@
 name: Pre-build steps for graalvm workflow
 description: Runs pre-build steps for graalvm workflow
 inputs:
-  graalvm:
-    description: 'GraalVM version'
-    required: true
+  distribution:
+    description: 'GraalVM distribution (graalvm, graalvm-community, or mandrel)'
+    required: false
   java:
     description: 'Java version'
     required: true
@@ -25,9 +25,9 @@ runs:
         fetch-depth: 0
 
     - name: "Setup GraalVM CE"
-      uses: graalvm/setup-graalvm@v1.0.12
+      uses: graalvm/setup-graalvm@v1.1.1
       with:
-        version: ${{ inputs.graalvm }}
+        distribution: ${{ inputs.distribution }}
         java-version: ${{ inputs.java }}
         components: 'native-image'
 
