@@ -32,7 +32,6 @@ echo "Pushing release version and recreating v${release_version} tag"
 git add gradle.properties
 git commit -m "[skip ci] Release v${release_version}"
 git push origin $target_branch
-git push origin :refs/tags/v${release_version}
 git tag -fa v${release_version} -m "Release v${release_version}"
 git push origin $target_branch --tags
 
