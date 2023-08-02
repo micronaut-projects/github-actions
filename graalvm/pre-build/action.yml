@@ -24,14 +24,21 @@ runs:
       with:
         fetch-depth: 0
 
-    - name: "Setup GraalVM CE"
+    - name: "Set up $JAVA_HOME for Gradle"
+      uses: actions/setup-java@v3.12.0
+      with:
+        distribution: 'oracle'
+        java-version: '17'
+
+    - name: "Set up $GRAALVM_HOME for Native Build Tools"
       uses: graalvm/setup-graalvm@v1.1.1
       with:
         distribution: ${{ inputs.distribution }}
         java-version: ${{ inputs.java }}
         components: 'native-image'
+        set-java-home: 'false'
 
-    - name: "Setup Gradle"
+    - name: "Set up Gradle"
       uses: gradle/gradle-build-action@v2
 
     - name: "Optional setup step"
