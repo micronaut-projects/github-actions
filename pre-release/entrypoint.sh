@@ -33,7 +33,9 @@ git add gradle.properties
 git commit -m "[skip ci] Release v${release_version}"
 git push origin $target_branch
 git tag -fa v${release_version} -m "Release v${release_version}"
-git push origin $target_branch --tags
+git push origin $target_branch
+# force push the updated tag
+git push origin v${release_version} --force
 
 echo "Closing again the release after updating the tag"
 release_url=`cat $GITHUB_EVENT_PATH | jq '.release.url' | sed -e 's/^"\(.*\)"$/\1/g'`
