@@ -31,7 +31,7 @@ runs:
         java-version: '17'
 
     - name: "Set up $GRAALVM_HOME for Native Build Tools"
-      uses: graalvm/setup-graalvm@v1.1.7
+      uses: graalvm/setup-graalvm@v1.1.8
       with:
         distribution: ${{ inputs.distribution }}
         java-version: ${{ inputs.java }}
