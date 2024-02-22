@@ -8,7 +8,7 @@ It requires a GitHub PAT with read/write permissions in micronaut-core.
 
 ```yaml
 - name: Checkout micronaut-core
-  uses: actions/checkout@v2
+  uses: actions/checkout@v4
   with:
     token: ${{ secrets.GH_TOKEN }}
     repository: micronaut-projects/micronaut-core
