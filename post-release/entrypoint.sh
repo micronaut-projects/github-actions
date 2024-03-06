@@ -61,7 +61,7 @@ cat gradle.properties
 
 echo "Committing and pushing"
 git add gradle.properties
-git commit -m "Back to ${next_version}$SNAPSHOT_SUFFIX"
+git commit -m "chore: Bump version to ${next_version}$SNAPSHOT_SUFFIX"
 git push origin $target_branch
 
 # Clean up .git artifacts we've created as root (so non-docker actions that follow can use git without re-cloning)
