@@ -19,7 +19,7 @@ inputs:
   oci-image-shape:
     description: The image shape.
     required: false
-    default: "VM.Standard2.4"
+    default: "VM.Standard.E4.Flex"
   runners-count:
     description: Number of runners to start
     required: false
@@ -62,6 +62,7 @@ runs:
             --image-id ${{ inputs.oci-image-ocid }} \
             --availability-domain ${{ inputs.oci-av-domain }} \
             --shape ${{ inputs.oci-image-shape }} \
+            --shape-config '{"ocpus":4, "memory_in_gbs":32}' \
             --freeform-tags "${FREEFORM_TAGS}"
           )
           INSTANCE_ID=$(echo $RESPONSE | jq -r '.data.id')
