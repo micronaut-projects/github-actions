@@ -62,7 +62,7 @@ runs:
             --image-id ${{ inputs.oci-image-ocid }} \
             --availability-domain ${{ inputs.oci-av-domain }} \
             --shape ${{ inputs.oci-image-shape }} \
-            --shape-config '{"ocpus":2, "memory_in_gbs":12}' \
+            --shape-config '{"ocpus":4, "memory_in_gbs":32}' \
             --freeform-tags "${FREEFORM_TAGS}"
           )
           INSTANCE_ID=$(echo $RESPONSE | jq -r '.data.id')
