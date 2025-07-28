@@ -14,9 +14,9 @@ runs:
     - name: "Free disk space"
       shell: bash
       run: |
-        sudo rm -rf "/usr/local/share/boost"
-        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-        sudo apt-get clean
+        sudo -n rm -rf "/usr/local/share/boost" || true
+        sudo -n rm -rf "$AGENT_TOOLSDIRECTORY" || true
+        sudo -n apt-get clean || true
         df -h
 
     - name: "Checkout repository"
