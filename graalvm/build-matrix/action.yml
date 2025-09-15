@@ -1,5 +1,10 @@
 name: Build matrix for graalvm workflow
 description: Creates matrix for graalvm workflow
+inputs:
+  java-version:
+    description: 'The version of Java used to run the Gradle build'
+    required: false
+    default: '17'
 outputs:
   matrix:
     description: "Matrix for native tests"
@@ -8,7 +13,7 @@ runs:
   using: "composite"
   steps:
     - name: "Checkout repository"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
 
@@ -16,7 +21,7 @@ runs:
       uses: actions/setup-java@v4.2.0
       with:
         distribution: 'oracle'
-        java-version: '17'
+        java-version: ${{ inputs.java-version }} 
 
     - name: "Setup Gradle"
       uses: gradle/gradle-build-action@v2
