@@ -11,6 +11,10 @@ inputs:
     description: 'Java version for running Gradle'
     required: false
     default: '17'
+  nativeTestTask:
+    description: 'Native test task that will be executed'
+    required: false
+    default: ''
 runs:
   using: "composite"
   steps:
@@ -47,4 +51,4 @@ runs:
     - name: "Optional setup step"
       shell: bash
       run: |
-        [ -f ./setup.sh ] && ./setup.sh || [ ! -f ./setup.sh ]
+        [ -f ./setup.sh ] && ./setup.sh ${{ inputs.nativeTestTask }} || [ ! -f ./setup.sh ]
