@@ -4,7 +4,7 @@ inputs:
   java-version:
     description: 'The version of Java used to run the Gradle build'
     required: false
-    default: '17'
+    default: '21'
 outputs:
   matrix:
     description: "Matrix for native tests"
