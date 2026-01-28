@@ -10,7 +10,7 @@ inputs:
   gradle-java:
     description: 'Java version for running Gradle'
     required: false
-    default: '17'
+    default: '21'
   nativeTestTask:
     description: 'Native test task that will be executed'
     required: false
