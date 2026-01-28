@@ -10,7 +10,7 @@ inputs:
   gradle-java:
     description: 'Java version for running Gradle'
     required: false
-    default: '17'
+    default: '21'
   nativeTestTask:
     description: 'Native test task that will be executed'
     required: false
@@ -39,7 +39,7 @@ runs:
         java-version: ${{ inputs.gradle-java }}
 
     - name: "Set up $GRAALVM_HOME for Native Build Tools"
-      uses: graalvm/setup-graalvm@v1.2.4
+      uses: graalvm/setup-graalvm@v1.4.5
       with:
         distribution: ${{ inputs.distribution }}
         java-version: ${{ inputs.java }}
