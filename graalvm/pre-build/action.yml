@@ -44,6 +44,7 @@ runs:
         distribution: ${{ inputs.distribution }}
         java-version: ${{ inputs.java }}
         set-java-home: 'false'
+        native-image-job-reports: true
 
     - name: "Set up Gradle"
       uses: gradle/gradle-build-action@v2
