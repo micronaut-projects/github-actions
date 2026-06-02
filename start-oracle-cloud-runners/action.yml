@@ -63,6 +63,7 @@ runs:
             --availability-domain ${{ inputs.oci-av-domain }} \
             --shape ${{ inputs.oci-image-shape }} \
             --shape-config '{"ocpus":4, "memoryInGBs":32}' \
+            --instance-options '{"areLegacyImdsEndpointsDisabled": true}' \
             --freeform-tags "${FREEFORM_TAGS}"
           )
           INSTANCE_ID=$(echo $RESPONSE | jq -r '.data.id')
