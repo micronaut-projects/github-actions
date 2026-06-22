@@ -34,7 +34,7 @@ runs:
         gradleTasks=$(./gradlew tasks --no-daemon --all)
         if [[ "$gradleTasks" == *"nativeTest"* ]]; then
           echo "Found native test tasks"
-          nativeTestTasks=$(echo "$gradleTasks" | grep -w "nativeTest" | sed 's/\(.*\) - Executes the test native binary/\"\1\"/' | tr '\n' ',' | sed 's/.$//')
+          nativeTestTasks=$(echo "$gradleTasks" | sed -n 's/^\([^ ]*:nativeTest\) - .*/"\1"/p' | tr '\n' ',' | sed 's/.$//')
           nativeTestTasksEntry="\"native_test_task\":[$(echo $nativeTestTasks)]"
         else
           echo "Native test tasks not found"
