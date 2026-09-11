@@ -5,6 +5,10 @@ inputs:
     description: 'The version of Java used to run the Gradle build'
     required: false
     default: '21'
+  develocity-access-key:
+    description: 'Develocity access key (host=key). setup-gradle exchanges it for a short-lived token that later steps receive as DEVELOCITY_ACCESS_KEY. When empty, setup-gradle uses a DEVELOCITY_ACCESS_KEY environment variable instead.'
+    required: false
+    default: ''
 outputs:
   matrix:
     description: "Matrix for native tests"
@@ -24,7 +28,21 @@ runs:
         java-version: ${{ inputs.java-version }} 
 
     - name: "Setup Gradle"
-      uses: gradle/gradle-build-action@v2
+      uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6
+      with:
+        develocity-access-key: ${{ inputs.develocity-access-key }}
+
+    # setup-gradle also exports the token as GRADLE_ENTERPRISE_ACCESS_KEY, which micronaut-build 8.0 treats as a CI
+    # build that writes to the remote build cache. Only pushes to release and default branches build merged code;
+    # every other event (pull requests, merge queues, workflow_run, schedules, manual runs) only reads from the cache.
+    # This sets the default for later steps; a step that sets ORG_GRADLE_PROJECT_cachePush itself still wins.
+    - name: "Restrict remote build cache writes to trusted pushes"
+      shell: bash
+      run: |
+        trusted_ref='^refs/heads/(master|main|[0-9]+\.[0-9]+\.x)$'
+        if [[ "$GITHUB_EVENT_NAME" != "push" || ! "$GITHUB_REF" =~ $trusted_ref ]]; then
+          echo "ORG_GRADLE_PROJECT_cachePush=false" >> "$GITHUB_ENV"
+        fi
 
     - name: "Set Matrix"
       id: set-matrix
