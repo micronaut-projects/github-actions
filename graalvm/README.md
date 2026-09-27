@@ -1,5 +1,8 @@
 # Github composite actions for graalvm workflow
 
+The `pre-build` and `build-matrix` actions work on the repository checked out by the job, so check it
+out (`actions/checkout`) before calling them.
+
 Usage example:
 ```yaml
 name: GraalVM Latest CI
